@@ -13,7 +13,7 @@ var STR = {
     fact_edu:'التعليم', fact_service:'الخدمة العسكرية', fact_loc:'الموقع',
     cf_name:'الاسم', cf_contact:'وسيلة التواصل (اختياري)', cf_msg:'رسالتك', cf_send:'إرسال',
     cf_ok:'وصلت رسالتك، شكرًا لك.', cf_err:'تعذر الإرسال الآن، جرّب لاحقًا.',
-    chat_title:'مساعد الموقع', chat_ph:'اسأل عن أحمد...',
+    chat_title:'مساعد أحمد الذكي', chat_ph:'اسأل عن أحمد...',
     chat_welcome:'أهلًا! أنا مساعد موقع أحمد زغلان. اسألني عن خبراته ومهاراته وتعليمه.',
     chat_err:'المساعد غير متاح الآن، جرّب لاحقًا.',
     footer:'أحمد زغلان — أخصائي مخازن | عضو برلمان شباب مصر، الدورة الحالية 2026',
@@ -30,7 +30,7 @@ var STR = {
     fact_edu:'Education', fact_service:'Military service', fact_loc:'Location',
     cf_name:'Name', cf_contact:'Contact detail (optional)', cf_msg:'Your message', cf_send:'Send',
     cf_ok:'Your message was received, thank you.', cf_err:'Could not send right now, try later.',
-    chat_title:'Site Assistant', chat_ph:'Ask about Ahmed...',
+    chat_title:"Ahmed's Smart Assistant", chat_ph:'Ask about Ahmed...',
     chat_welcome:"Hi! I'm the assistant of Ahmed Zoghlan's site. Ask me about his experience, skills and education.",
     chat_err:'Assistant unavailable right now, try later.',
     footer:'Ahmed Zoghlan — Storekeeper Specialist | Member, Egyptian Youth Parliament, current session 2026',
@@ -285,6 +285,17 @@ function chatActions(q){
   if(has('صور','photo','صورة','picture')) add(t('tab_photos'), 'photos.html');
   return acts.slice(0,5);
 }
+/* Typing indicator: three animated dots while the assistant writes */
+var chatForm_ = document.getElementById('chatForm');
+(function(){ var i=document.getElementById('chatInput'); function u(){ chatForm_.classList.toggle('ready', !!i.value.trim()); } i.addEventListener('input',u); chatForm_.addEventListener('submit',function(){ setTimeout(u,0); }); })();
+function addTyping(){
+  var d = document.createElement('div');
+  d.className = 'm bot typing';
+  d.innerHTML = '<span class="typing-av">\u2726</span><span class="typing-dots" aria-label="typing"><i></i><i></i><i></i></span>';
+  document.getElementById('chatForm').classList.add('busy');
+  chatMsgs.appendChild(d); chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  return d;
+}
 /* Never show raw links in assistant replies: buttons carry the links */
 function cleanReply(t){
   return String(t)
@@ -312,10 +323,12 @@ document.getElementById('chatForm').addEventListener('submit', function(ev){
   var q = inp.value.trim(); if(!q) return;
   addMsg('user', q); inp.value = '';
   if(API_URL.indexOf('PASTE_')===0){ addMsg('err', t('chat_err')); return; }
+  var typing = addTyping();
   api('assistant', {message: q, lang: lang}).then(function(res){
+    typing.remove(); chatForm_.classList.remove('busy');
     if(res && res.ok && res.reply){ addMsg('bot', cleanReply(res.reply)); addActions(chatActions(q)); }
     else addMsg('err', t('chat_err'));
-  }).catch(function(){ addMsg('err', t('chat_err')); });
+  }).catch(function(){ typing.remove(); chatForm_.classList.remove('busy'); addMsg('err', t('chat_err')); });
 });
 
 document.getElementById('topnav').addEventListener('scroll', updateNavFades, {passive:true});
