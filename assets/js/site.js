@@ -285,6 +285,15 @@ function chatActions(q){
   if(has('صور','photo','صورة','picture')) add(t('tab_photos'), 'photos.html');
   return acts.slice(0,5);
 }
+/* Never show raw links in assistant replies: buttons carry the links */
+function cleanReply(t){
+  return String(t)
+    .replace(/\[([^\]]*)\]\((?:https?:\/\/|www\.)[^)]*\)/g, '$1')
+    .replace(/(?:https?:\/\/|www\.)[^\s)\]]+/g, '')
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
 function addActions(acts){
   if(!acts.length) return;
   var w = document.createElement('div');
@@ -304,7 +313,7 @@ document.getElementById('chatForm').addEventListener('submit', function(ev){
   addMsg('user', q); inp.value = '';
   if(API_URL.indexOf('PASTE_')===0){ addMsg('err', t('chat_err')); return; }
   api('assistant', {message: q, lang: lang}).then(function(res){
-    if(res && res.ok && res.reply){ addMsg('bot', res.reply); addActions(chatActions(q)); }
+    if(res && res.ok && res.reply){ addMsg('bot', cleanReply(res.reply)); addActions(chatActions(q)); }
     else addMsg('err', t('chat_err'));
   }).catch(function(){ addMsg('err', t('chat_err')); });
 });
