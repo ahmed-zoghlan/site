@@ -288,3 +288,12 @@ body{overflow-x:clip}
 .chat-fab{transition:transform .2s,box-shadow .2s}
 .chat-fab:hover{transform:scale(1.06)}
 @media (prefers-reduced-motion:reduce){.chat-msgs .m,.chat-actions,.typing-av::after,.typing-dots i,.typing-label{animation:none!important}.typing-label{-webkit-text-fill-color:var(--muted)}}
+
+/* Launcher pill: "Ask Athar" */
+.chat-fab{width:auto;height:52px;padding:0 20px 0 16px;border-radius:999px;display:flex;align-items:center;gap:8px;font-family:inherit;font-weight:700;font-size:.95rem}
+.chat-fab .fab-ico{font-size:1.25rem;line-height:1}
+.chat-fab .fab-label{transition:max-width .25s,opacity .2s;max-width:140px;overflow:hidden;white-space:nowrap}
+.chat-fab.open{padding:0;width:52px;justify-content:center}
+.chat-fab.open .fab-label{max-width:0;opacity:0}
+.chat-fab.open .fab-ico{margin:0}
+.chat-fab.open{gap:0}

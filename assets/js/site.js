@@ -13,8 +13,8 @@ var STR = {
     fact_edu:'التعليم', fact_service:'الخدمة العسكرية', fact_loc:'الموقع',
     cf_name:'الاسم', cf_contact:'وسيلة التواصل (اختياري)', cf_msg:'رسالتك', cf_send:'إرسال',
     cf_ok:'وصلت رسالتك، شكرًا لك.', cf_err:'تعذر الإرسال الآن، جرّب لاحقًا.',
-    chat_title:'مساعد أحمد الذكي', chat_ph:'اسأل عن أحمد...',
-    chat_welcome:'أهلًا! أنا مساعد موقع أحمد زغلان. اسألني عن خبراته ومهاراته وتعليمه.',
+    chat_title:'أثر', chat_fab:'اسأل أثر', chat_ph:'اسأل أثر عن أحمد...',
+    chat_welcome:'أهلًا! أنا أثر، مساعد أحمد زغلان. اسألني عن خبراته ومهاراته وتعليمه.',
     chat_err:'المساعد غير متاح الآن، جرّب لاحقًا.',
     footer:'أحمد زغلان — أخصائي مخازن | عضو برلمان شباب مصر، الدورة الحالية 2026',
     credit:'طوِّر هذا الموقع بواسطة ACTT'
@@ -30,8 +30,8 @@ var STR = {
     fact_edu:'Education', fact_service:'Military service', fact_loc:'Location',
     cf_name:'Name', cf_contact:'Contact detail (optional)', cf_msg:'Your message', cf_send:'Send',
     cf_ok:'Your message was received, thank you.', cf_err:'Could not send right now, try later.',
-    chat_title:"Ahmed's Smart Assistant", chat_ph:'Ask about Ahmed...',
-    chat_welcome:"Hi! I'm the assistant of Ahmed Zoghlan's site. Ask me about his experience, skills and education.",
+    chat_title:'Athar', chat_fab:'Ask Athar', chat_ph:'Ask Athar about Ahmed...',
+    chat_welcome:"Hi! I'm Athar, Ahmed Zoghlan's assistant. Ask me about his experience, skills and education.",
     chat_err:'Assistant unavailable right now, try later.',
     footer:'Ahmed Zoghlan — Storekeeper Specialist | Member, Egyptian Youth Parliament, current session 2026',
     credit:'Developed by ACTT'
@@ -257,9 +257,10 @@ var chatMsgs = document.getElementById('chatMsgs');
 var chatOpened = false;
 document.getElementById('chatFab').addEventListener('click', function(){
   chatBox.classList.toggle('hidden');
+  this.classList.toggle('open', !chatBox.classList.contains('hidden'));
   if(!chatOpened){ chatOpened = true; addMsg('bot', t('chat_welcome')); }
 });
-document.getElementById('chatClose').addEventListener('click', function(){ chatBox.classList.add('hidden'); });
+document.getElementById('chatClose').addEventListener('click', function(){ chatBox.classList.add('hidden'); document.getElementById('chatFab').classList.remove('open'); });
 function addMsg(cls, text){
   var d = document.createElement('div');
   d.className = 'm ' + cls; d.textContent = text;
