@@ -302,6 +302,10 @@ function cleanReply(t){
   return String(t)
     .replace(/\[([^\]]*)\]\((?:https?:\/\/|www\.)[^)]*\)/g, '$1')
     .replace(/(?:https?:\/\/|www\.)[^\s)\]]+/g, '')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/(^|\n)\s*[*-]\s+/g, '$1\u2022 ')
+    .replace(/\*([^*\n]+)\*/g, '$1')
+    .replace(/#{1,6}\s*/g, '')
     .replace(/[ \t]{2,}/g, ' ')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
